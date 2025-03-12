@@ -3,6 +3,7 @@ import './Pages.css';
 
 const Portfolio = () => {
   const [repos, setRepos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRepos = async () => {
@@ -12,6 +13,8 @@ const Portfolio = () => {
         setRepos(data);
       } catch (error) {
         console.error('Error fetching repositories:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -24,7 +27,7 @@ const Portfolio = () => {
         <div className="top-row">
           <h2>Projects</h2>
         </div>
-        <div class = "column-solo">
+        <div className="column-solo">
           <h2>My projects</h2>
           <ul>
             <li></li>
@@ -32,20 +35,23 @@ const Portfolio = () => {
               Here you can see my projects that I have worked on. You can also visit my GitHub page to see more.
             </li>
           </ul>
-
         </div>
         <div className="columns">
           <div className="columnsolo-img">
-            <ul>
-              {repos.map((repo) => (
-                <li key={repo.id}>
-                  <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                    <h2>{repo.name}</h2>
-                    <p>{repo.description}</p>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {loading ? (
+              <p>Loading projects...</p> 
+            ) : (
+              <ul>
+                {repos.map((repo) => (
+                  <li key={repo.id}>
+                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                      <h2>{repo.name}</h2>
+                      <p>{repo.description}</p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </section>
